@@ -3,7 +3,7 @@ from .models import Course
 from rest_framework import serializers
 
 
-class Courseserializer(serializers.Modelserializer):
+class Courseserializer(serializers.ModelSerializer):
     class Meta:
         model = Course
         fields = '__all__'
