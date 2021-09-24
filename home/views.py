@@ -29,7 +29,6 @@ class Courselist_detail(APIView):
             return Course.objects.get(pk=pk)
         except Course.DoesNotExist:
             raise Http404
-
     def get(self,request,pk,formet=None):
         course_tutorial = self.get_object(pk)
         serializer = Courseserializer(course_tutorial)
