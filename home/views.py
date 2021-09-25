@@ -2,6 +2,8 @@ from django.db.models.query import QuerySet
 from django.http.request import RAISE_ERROR
 from django.http.response import JsonResponse
 from django.shortcuts import render
+from rest_framework import viewsets
+from rest_framework import serializers
 from rest_framework.serializers import Serializer
 from rest_framework.views import APIView
 from rest_framework.response import Response
@@ -10,17 +12,45 @@ from django.http import Http404
 from .serializer import Courseserializer
 from rest_framework import status
 from rest_framework import mixins,generics
+from rest_framework.viewsets import ViewSet
 
+
+
+# Primary or Non-Primary key Operation
 # Create your views here.
-class Courselistview(generics.ListCreateAPIView):
-    queryset = Course.objects.all()
-    serializer_class = Courseserializer
-class Courselist_detail(generics.RetrieveUpdateDestroyAPIView):
-    queryset = Course.objects.all()
-    serializer_class = Courseserializer
+
+
+# Using ViewSet class
+class CourseViewSet(ViewSet):
+    def list(self,request):
+        course = Course.objects.all()
+        Serializer = Courseserializer(course,many=True)
+        return Response(Serializer.data)
+        
+    def retrieve(self,request,pk):
+        try:
+            course = Course.objects.get(pk=pk)
+        except Course.DoesNotExist:
+            return Response(status=status.HTTP_404_NOT_FOUND)    
+        Serializer = Courseserializer(course)
+        return Response(Serializer.data)    
 
 
 
+
+
+# Genrics Api Views
+# class Courselistview(generics.ListCreateAPIView):
+#     queryset = Course.objects.all()
+#     serializer_class = Courseserializer
+# class Courselist_detail(generics.RetrieveUpdateDestroyAPIView):
+#     queryset = Course.objects.all()
+#     serializer_class = Courseserializer
+
+
+
+
+# Using Mixins
 # class Courselistview(mixins.ListModelMixin, mixins.CreateModelMixin,generics.GenericAPIView):
 #     queryset = Course.objects.all()
 #     serializer_class = Courseserializer
@@ -41,6 +71,9 @@ class Courselist_detail(generics.RetrieveUpdateDestroyAPIView):
 
 
 
+
+
+# API using class-based views
 # class Courselistview(APIView):
 #     def get(self,request,formet=None):
 #         courses = Course.objects.all()
