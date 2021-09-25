@@ -3,7 +3,7 @@ from django.http.request import RAISE_ERROR
 from django.http.response import JsonResponse
 from django.shortcuts import render
 from rest_framework.serializers import Serializer
-# from rest_framework.views import APIView
+from rest_framework.views import APIView
 from rest_framework.response import Response
 from .models import Course
 from django.http import Http404
@@ -12,25 +12,32 @@ from rest_framework import status
 from rest_framework import mixins,generics
 
 # Create your views here.
-class Courselistview(mixins.ListModelMixin, mixins.CreateModelMixin,generics.GenericAPIView):
+class Courselistview(generics.ListCreateAPIView):
     queryset = Course.objects.all()
     serializer_class = Courseserializer
-    def get(self,request):
-        return self.list(request)
-    def post(self,request):
-        return self.create(request)
-
-
-
-class Courselist_detail(generics.GenericAPIView,mixins.RetrieveModelMixin,mixins.UpdateModelMixin,mixins.DestroyModelMixin):
+class Courselist_detail(generics.RetrieveUpdateDestroyAPIView):
     queryset = Course.objects.all()
     serializer_class = Courseserializer
-    def get(self,request,pk):
-        return self.retrieve(request,pk)
-    def put(self,request,pk):
-        return self.update(request,pk)
-    def delete(self,request,pk):
-        return self.destroy(request,pk)
+
+
+
+# class Courselistview(mixins.ListModelMixin, mixins.CreateModelMixin,generics.GenericAPIView):
+#     queryset = Course.objects.all()
+#     serializer_class = Courseserializer
+#     def get(self,request):
+#         return self.list(request)
+#     def post(self,request):
+#         return self.create(request)
+
+# class Courselist_detail(generics.GenericAPIView,mixins.RetrieveModelMixin,mixins.UpdateModelMixin,mixins.DestroyModelMixin):
+#     queryset = Course.objects.all()
+#     serializer_class = Courseserializer
+#     def get(self,request,pk):
+#         return self.retrieve(request,pk)
+#     def put(self,request,pk):
+#         return self.update(request,pk)
+#     def delete(self,request,pk):
+#         return self.destroy(request,pk)
 
 
 
