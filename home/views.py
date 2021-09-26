@@ -13,6 +13,8 @@ from .serializer import Courseserializer
 from rest_framework import status
 from rest_framework import mixins,generics
 from rest_framework.viewsets import ViewSet,ModelViewSet
+from rest_framework.permissions import IsAuthenticated
+from rest_framework.authentication import BasicAuthentication
 
 
 
@@ -21,6 +23,8 @@ from rest_framework.viewsets import ViewSet,ModelViewSet
 
 # ModelViewSet
 class CourseViewSet(viewsets.ModelViewSet):
+    authentication_classes = [BasicAuthentication]
+    permission_classes = [IsAuthenticated]
     queryset = Course.objects.all()
     serializer_class = Courseserializer
 
