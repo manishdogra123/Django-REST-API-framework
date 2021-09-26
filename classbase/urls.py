@@ -22,8 +22,10 @@ from home.views import CourseViewSet
 from rest_framework.routers import DefaultRouter
 router = DefaultRouter()
 router.register('courses', CourseViewSet, basename='course')
+from rest_framework.authtoken.views import obtain_auth_token
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('api/',include(router.urls))
+    path('api/',include(router.urls)),
+    path('auth/login',obtain_auth_token, name='authtoken')
 ]

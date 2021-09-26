@@ -14,7 +14,7 @@ from rest_framework import status
 from rest_framework import mixins,generics
 from rest_framework.viewsets import ViewSet,ModelViewSet
 from rest_framework.permissions import IsAuthenticated,IsAdminUser,BasePermission
-from rest_framework.authentication import BasicAuthentication
+from rest_framework.authentication import BasicAuthentication,TokenAuthentication
 
 
 
@@ -33,8 +33,8 @@ class WriteByAdminPermission(BasePermission):
         return False            
 # ModelViewSet
 class CourseViewSet(viewsets.ModelViewSet):
-    authentication_classes = [BasicAuthentication]
-    permission_classes = [WriteByAdminPermission]
+    authentication_classes = [TokenAuthentication]
+    permission_classes = [IsAuthenticated,WriteByAdminPermission]
     queryset = Course.objects.all()
     serializer_class = Courseserializer
 
