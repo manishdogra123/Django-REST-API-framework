@@ -12,46 +12,51 @@ from django.http import Http404
 from .serializer import Courseserializer
 from rest_framework import status
 from rest_framework import mixins,generics
-from rest_framework.viewsets import ViewSet
+from rest_framework.viewsets import ViewSet,ModelViewSet
 
 
 
 # Primary or Non-Primary key Operation
 # Create your views here.
 
+# ModelViewSet
+class CourseViewSet(viewsets.ModelViewSet):
+    queryset = Course.objects.all()
+    serializer_class = Courseserializer
+
+
 
 # Using ViewSet class
-class CourseViewSet(ViewSet):
-    def list(self,request):
-        course = Course.objects.all()
-        Serializer = Courseserializer(course,many=True)
-        return Response(Serializer.data)
+# class CourseViewSet(ViewSet):
+#     def list(self,request):
+#         course = Course.objects.all()
+#         Serializer = Courseserializer(course,many=True)
+#         return Response(Serializer.data)
 
-    def create(self,request):
-        Serializer = Courseserializer(data=request.data)    
-        if Serializer.is_valid():
-            Serializer.save()
-        return Response(request.data)    
+#     def create(self,request):
+#         Serializer = Courseserializer(data=request.data)    
+#         if Serializer.is_valid():
+#             Serializer.save()
+#         return Response(request.data)    
 
-    def retrieve(self,request,pk):
-        try:
-            course = Course.objects.get(pk=pk)
-        except Course.DoesNotExist:
-            return Response(status=status.HTTP_404_NOT_FOUND)      
-        serializer = Courseserializer(course)
-        return Response(serializer.data)      
-    def destroy(self,request,pk):
-        course = Course.objects.get(pk=pk)
-        course.delete()
-        return Response(status=status.HTTP_400_BAD_REQUEST)
-           
-       
-    def update(self,request,pk):
-        course = Course.objects.get(pk=pk)
-        Serializer = Courseserializer(course,data=request)    
-        if Serializer.is_valid():
-            Serializer.save()
-        return Response(status=status.HTTP_400_BAD_REQUEST)    
+#     def retrieve(self,request,pk):
+#         try:
+#             course = Course.objects.get(pk=pk)
+#         except Course.DoesNotExist:
+#             return Response(status=status.HTTP_404_NOT_FOUND)      
+#         serializer = Courseserializer(course)
+#         return Response(serializer.data)      
+#     def destroy(self,request,pk):
+#         course = Course.objects.get(pk=pk)
+#         course.delete()
+#         return Response(status=status.HTTP_400_BAD_REQUEST)
+ 
+#     def update(self,request,pk):
+#         course = Course.objects.get(pk=pk)
+#         Serializer = Courseserializer(course,data=request)    
+#         if Serializer.is_valid():
+#             Serializer.save()
+#         return Response(status=status.HTTP_400_BAD_REQUEST)    
 
   
 
