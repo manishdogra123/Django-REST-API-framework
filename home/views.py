@@ -1,3 +1,4 @@
+from django.db import models
 from django.db.models.query import QuerySet
 from django.http.request import RAISE_ERROR
 from django.http.response import JsonResponse
@@ -15,11 +16,19 @@ from rest_framework import mixins,generics
 from rest_framework.viewsets import ViewSet,ModelViewSet
 from rest_framework.permissions import IsAuthenticated,IsAdminUser,BasePermission
 from rest_framework.authentication import BasicAuthentication,TokenAuthentication
-
+from django.contrib.auth.models import User
+from rest_framework.authtoken.models import Token
 
 
 # Primary or Non-Primary key Operation
 # Create your views here.
+
+# get token
+users = User.objects.all()
+for user in users:
+   token =  Token.objects.get_or_create(user=user)
+   print(token)
+
 
 # Coustom Permission
 class WriteByAdminPermission(BasePermission):
