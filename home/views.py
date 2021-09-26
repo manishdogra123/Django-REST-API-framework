@@ -13,7 +13,7 @@ from .serializer import Courseserializer
 from rest_framework import status
 from rest_framework import mixins,generics
 from rest_framework.viewsets import ViewSet,ModelViewSet
-from rest_framework.permissions import IsAuthenticated
+from rest_framework.permissions import IsAuthenticated,IsAdminUser,BasePermission
 from rest_framework.authentication import BasicAuthentication
 
 
@@ -21,10 +21,20 @@ from rest_framework.authentication import BasicAuthentication
 # Primary or Non-Primary key Operation
 # Create your views here.
 
+# Coustom Permission
+class WriteByAdminPermission(BasePermission):
+    def has_permission(self,request,view):
+        user = request.user
+        if request.method == 'GET':
+            return True
+        if request.method == 'POST' or request.method == 'PUT' or request.method == 'DELETE':
+            if user.is_superuser:
+                return True  
+        return False            
 # ModelViewSet
 class CourseViewSet(viewsets.ModelViewSet):
     authentication_classes = [BasicAuthentication]
-    permission_classes = [IsAuthenticated]
+    permission_classes = [WriteByAdminPermission]
     queryset = Course.objects.all()
     serializer_class = Courseserializer
 
