@@ -26,15 +26,34 @@ class CourseViewSet(ViewSet):
         course = Course.objects.all()
         Serializer = Courseserializer(course,many=True)
         return Response(Serializer.data)
-        
+
+    def create(self,request):
+        Serializer = Courseserializer(data=request.data)    
+        if Serializer.is_valid():
+            Serializer.save()
+        return Response(request.data)    
+
     def retrieve(self,request,pk):
         try:
             course = Course.objects.get(pk=pk)
         except Course.DoesNotExist:
-            return Response(status=status.HTTP_404_NOT_FOUND)    
-        Serializer = Courseserializer(course)
-        return Response(Serializer.data)    
+            return Response(status=status.HTTP_404_NOT_FOUND)      
+        serializer = Courseserializer(course)
+        return Response(serializer.data)      
+    def destroy(self,request,pk):
+        course = Course.objects.get(pk=pk)
+        course.delete()
+        return Response(status=status.HTTP_400_BAD_REQUEST)
+           
+       
+    def update(self,request,pk):
+        course = Course.objects.get(pk=pk)
+        Serializer = Courseserializer(course,data=request)    
+        if Serializer.is_valid():
+            Serializer.save()
+        return Response(status=status.HTTP_400_BAD_REQUEST)    
 
+  
 
 
 
