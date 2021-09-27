@@ -23,7 +23,7 @@ from rest_framework.authtoken.models import Token
 # Primary or Non-Primary key Operation
 # Create your views here.
 
-# get token
+# generate token
 users = User.objects.all()
 for user in users:
    token =  Token.objects.get_or_create(user=user)
@@ -42,7 +42,7 @@ class WriteByAdminPermission(BasePermission):
         return False            
 # ModelViewSet
 class CourseViewSet(viewsets.ModelViewSet):
-    authentication_classes = [TokenAuthentication]
+    # authentication_classes = [TokenAuthentication]
     permission_classes = [IsAuthenticated,WriteByAdminPermission]
     queryset = Course.objects.all()
     serializer_class = Courseserializer

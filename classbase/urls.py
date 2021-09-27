@@ -24,8 +24,15 @@ router = DefaultRouter()
 router.register('courses', CourseViewSet, basename='course')
 from rest_framework.authtoken.views import obtain_auth_token
 
+from rest_framework_simplejwt.views import (
+    TokenObtainPairView,
+    TokenRefreshView,
+)
+
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('api/',include(router.urls)),
-    path('auth/login',obtain_auth_token, name='authtoken')
+    path('auth/login',obtain_auth_token, name='authtoken'),
+    path('api/auth/login/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
+    path('api/token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
 ]
